@@ -17,3 +17,42 @@ class User(db.Model):
             "email": self.email,
             # do not serialize the password, its a security breach
         }
+
+class Character(db.Model):
+    __tablename__ = 'character'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), nullable=False)
+    gender = db.Column(db.String(50))
+    species = db.Column(db.String(50))
+
+    favorites = db.relationship('Favorite', backref='character', lazy=True)
+
+    def serialize(self):
+        return {
+            "Character": self.name,
+        }
+    
+class Planet(db.Model):
+    __tablename__ = 'planet'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), nullable=False)
+    population = db.Column(db.Integer)
+    climate = db.Column(db.String(50))
+
+    favorites = db.relationship('Favorite', backref='planet', lazy=True)
+
+    def __repr__(self):
+        return f'<Planet {self.name}>'
+
+class Favorite(db.Model):
+    __tablename__ = 'favorite'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    character_id = db.Column(db.Integer, db.ForeignKey('character.id'), nullable=True)
+    planet_id = db.Column(db.Integer, db.ForeignKey('planet.id'), nullable=True)
+
+    def __repr__(self):
+        return f'<Favorite user={self.user_id}>'
