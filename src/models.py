@@ -9,7 +9,8 @@ class User(db.Model):
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
-
+    
+    favorites=db.relationship("Favorite", uselist=True)
 
     def serialize(self):
         return {
@@ -53,6 +54,8 @@ class Favorite(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     character_id = db.Column(db.Integer, db.ForeignKey('character.id'), nullable=True)
     planet_id = db.Column(db.Integer, db.ForeignKey('planet.id'), nullable=True)
+
+    user= db.relationship("User",back_populates="favorites")
 
     def __repr__(self):
         return f'<Favorite user={self.user_id}>'
