@@ -46,9 +46,9 @@ def handle_hello():
     return jsonify(response_body), 200
 
 # this only runs if `$ python src/app.py` is executed
-if __name__ == '__main__':
-    PORT = int(os.environ.get('PORT', 3000))
-    app.run(host='0.0.0.0', port=PORT, debug=False)
+
+
+CURRENT_USER_ID = 1
 
 @app.route('/people', methods=['GET'])
 def get_people():
@@ -204,7 +204,9 @@ def delete_favorite_person(people_id):
 
     return jsonify({"msg": "Favorite character deleted"}), 200
 
-
+if __name__ == '__main__':
+    PORT = int(os.environ.get('PORT', 3000))
+    app.run(host='0.0.0.0', port=PORT, debug=False)
 # --------------------
 # RUN SERVER
 # --------------------
